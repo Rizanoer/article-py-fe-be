@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Dashboard</title>
+  <style>
+    /* Styling untuk tab dan konten */
+    .tab-content {
+      display: none;
+    }
+    .active-tab {
+      display: block;
+    }
+    .tabs li {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 10px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+    .tabs .active {
+      background-color: #4CAF50;
+      color: white;
+    }
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+    button {
+      text-decoration: none;
+      padding: 8px 12px;
+      margin: 0 5px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div style="text-align: center;">
+    <h1>All Posts</h1>
+    
+    <!-- Tabs for Published, Drafts, Trashed -->
+    <ul class="tabs">
+      <li id="tab-published" class="active" onclick="changeTab('published')">Published</li>
+      <li id="tab-drafts" onclick="changeTab('drafts')">Drafts</li>
+      <li id="tab-trashed" onclick="changeTab('trashed')">Trashed</li>
+    </ul>
+  </div>
+
+  <div style="text-align: center;">
+    <a href="{{ url_for('addnew') }}" style="text-align: center;">
+      <button>Add New</button>
+    </a>
+  </div>
+
+  <!-- Published Posts Tab -->
+  <div id="published" class="tab-content active-tab">
+    <h2 style="text-align: center;">Published</h2>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Action</th>
+      </tr>
+      {% for posts in published %}
+      <tr>
+        <td>{{ posts.title }}</td>
+        <td>{{ posts.category }}</td>
+        <td>
+          <a href="{{ url_for('edit_posts', id=posts.id) }}" class="fa fa-edit"></a>
+          <a href="{{ url_for('trash_posts', id=posts.id) }}" class="fa fa-trash"></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <!-- Draft Posts Tab -->
+  <div id="drafts" class="tab-content">
+    <h2 style="text-align: center;">Drafts</h2>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Action</th>
+      </tr>
+      {% for posts in draft %}
+      <tr>
+        <td>{{ posts.title }}</td>
+        <td>{{ posts.category }}</td>
+        <td>
+          <a href="{{ url_for('edit_posts', id=posts.id) }}">Edit</a>
+          <a href="{{ url_for('trash_posts', id=posts.id) }}">Trash</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <!-- Trashed Posts Tab -->
+  <div id="trashed" class="tab-content">
+    <h2 style="text-align: center;">Trashed</h2>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Action</th>
+      </tr>
+      {% for posts in trashed %}
+      <tr>
+        <td>{{ posts.title }}</td>
+        <td>{{ posts.category }}</td>
+        <td>
+          <a href="{{ url_for('edit_posts', id=posts.id) }}">Edit</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <script>
+    function changeTab(tabName) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => {
+        tab.classList.remove('active-tab');
+      });
+
+      const tabLinks = document.querySelectorAll('.tabs li');
+      tabLinks.forEach(link => {
+        link.classList.remove('active');
+      });
+
+      document.getElementById(tabName).classList.add('active-tab');
+
+      document.getElementById('tab-' + tabName).classList.add('active');
+    }
+  </script>
+</body>
+</html>
