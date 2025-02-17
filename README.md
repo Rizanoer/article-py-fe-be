@@ -1,6 +1,4 @@
-# Project Name
-
-Deskripsi proyek singkat.
+# Article
 
 ## Cara Menggunakan
 
